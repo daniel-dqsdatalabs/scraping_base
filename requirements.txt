@@ -1,0 +1,11 @@
+boto3
+couchdb
+webdriver_manager
+fake_user_agent
+random-user-agent
+requests
+selenium
+undetected-chromedriver
+urllib3
+requests-cache
+
