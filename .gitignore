@@ -190,5 +190,6 @@ lib/browsermob-proxy-2.1.4
 
 # root 
 README.md 
+.DS_Store
 root_cache.sqlite 
 docker-compose.yml
