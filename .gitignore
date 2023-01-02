@@ -38,7 +38,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -184,12 +183,10 @@ cython_debug/
 #.idea/
 
 # lib folders
-lib/couchdb
-lib/deprecated
-lib/browsermob-proxy-2.1.4
 
 # root 
-README.md 
 .DS_Store
 root_cache.sqlite 
-docker-compose.yml
+lib/couchdb/*
+lib/deprecated/*
+lib/browsermob-proxy-2.1.4/*
