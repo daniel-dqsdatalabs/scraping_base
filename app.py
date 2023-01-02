@@ -14,15 +14,14 @@ from src import WebDriver, wait_page_loaded, fill_input, click_sync
 def scrape(url):
     driver = WebDriver().init()
     
-    query = "massa falida"
-    xpath_btn = '/html/body/dev-root/dev-consulta/main/dev-filtros/div[3]/div/div/button[1]'
+    input_txt = ""
+    xpath_btn = ""
     
     try:
         driver.get(url)
         wait_page_loaded(driver)
-        fill_input(driver, query)
+        fill_input(driver, input_txt)
         click_sync(driver, xpath_btn)
-        print(driver)
     except Exception as e:
         print(e)
     finally:
@@ -31,5 +30,5 @@ def scrape(url):
     
 
 if __name__ == "__main__":
-    scrape(url="https://www.listadevedores.pgfn.gov.br")
+    scrape(url="")
     
