@@ -1,34 +1,43 @@
-
 # -*- coding: utf-8 -*-
-#==============================================================================
+# ==============================================================================
 # filename          : app.py
 # email             : daniel@dqsdatalabs.com
 # date              : 29.12.2022
 # version           : 0.01
-#==============================================================================
-
-from time import sleep
-from src import WebDriver, wait_page_loaded, fill_input, click_sync
+# ==============================================================================
 
 
-def scrape(url):
-    driver = WebDriver().init()
+from src import Scraper, Storage
+from src import TARGET_URL, CSV_FILE_PATH 
+from src import create_dataset, extract_file, file_exists
+
+def generate_data_service():
     
-    input_txt = ""
-    xpath_btn = ""
+    if file_exists(CSV_FILE_PATH):
+        print("File already exists")
+        return
     
-    try:
-        driver.get(url)
-        wait_page_loaded(driver)
-        fill_input(driver, input_txt)
-        click_sync(driver, xpath_btn)
-    except Exception as e:
-        print(e)
-    finally:
-        sleep(15)
+    # download file
+    page = Scraper(url=TARGET_URL, query="massa falida")
+    page.download_file()
+    
+    # process file
+    extract_file()
+    dataset = create_dataset()
+    
+    # store results
+    storage = Storage()
+    storage.save_debtors(dataset)
+ 
+    
+def acquisition_data_service():
         
+    # query results
+    storage = Storage()
+    dataset = storage.get_debtors()
     
+    print(dataset.head(10))
+
 
 if __name__ == "__main__":
-    scrape(url="")
-    
+    acquisition_data_service()

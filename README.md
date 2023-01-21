@@ -7,3 +7,9 @@ template code for web scrapers
 > source ./venv/bin/activate   
 > pip install -r requirements.txt    
 ```
+
+1 - Download the entire website using httrack
+
+    brew install httrack
+
+    

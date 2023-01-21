@@ -5,7 +5,9 @@ fake_user_agent
 random-user-agent
 requests
 selenium
+pandas
 undetected-chromedriver
 urllib3
 requests-cache
-
+validate-docbr
+requests-ip-rotator

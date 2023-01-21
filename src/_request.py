@@ -12,7 +12,7 @@ import requests
 import requests_cache
 from lxml import etree
 from requests.models import Response
-from src._utils import random_http_headers
+from ._utils import random_http_headers
 
 requests.packages.urllib3.disable_warnings()
 requests_cache.install_cache('root_cache', backend='sqlite', expire_after=28800)

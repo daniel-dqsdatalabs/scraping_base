@@ -12,9 +12,9 @@ import json
 import random
 import requests
 import functools
-from src._req import WebRequest
-from src._config import PROXY_CHECK_URL
-from src._utils import random_http_headers
+from ._request import WebRequest
+from ._config import PROXY_CHECK_URL
+from ._utils import random_http_headers
 
 
 class Proxy:

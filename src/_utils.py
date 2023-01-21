@@ -6,12 +6,16 @@
 # version           : 0.01
 #==============================================================================
 
-import random 
+import os
+import random
+import time 
+import zipfile
+import pandas as pd
+from typing import Union
+from validate_docbr import CNPJ
 from fake_user_agent import user_agent
-from selenium.webdriver.common.by import By
-from src._config import CHROME_V1_PATH, CHROME_V2_PATH
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from ._config import CHROME_V1_PATH, CHROME_V2_PATH, ZIP_FILE_PATH, CSV_FILE_PATH, REPO_PATH
+
 
 
 def random_chrome_driver():
@@ -33,18 +37,62 @@ def random_http_headers():
         'Accept-Language': 'en-US,zh;q=0.8'
     }
 
+def validate_cnpj(cnpj: str):
+    return CNPJ().validate(cnpj)
 
-def wait_page_loaded(web_driver):
-    wait = WebDriverWait(web_driver, 20)
-    wait.until(EC.visibility_of_all_elements_located((By.XPATH, '/html/body')))
-    
 
-def click_sync(web_driver, xpath):
-    web_driver.find_elements(By.XPATH, xpath)[-1].click() 
+def file_exists(path: str):
+    """ 
+    Check if a file exist in a directory
+    :return: boolean value, True if file exist and False otherwise
+    """
+    return os.path.isfile(path)
+
+
+def extract_file():
+    """
+    This function extracts a zip file from the repository path to the given file path. 
+    It first checks if the file is present in the repository path, and if it is not present, it waits for one second and checks again. 
+    Once the file is present, it unzips it to the given file path.
+    """
+
+    # file exists
+    if not file_exists(ZIP_FILE_PATH):
+        raise FileNotFoundError("ZIP File not found")
+
+    # extract file 
+    with zipfile.ZipFile(ZIP_FILE_PATH, 'r') as zip_ref:
+        zip_ref.extractall(REPO_PATH)
+        
+    # # remove zip file
+    time.sleep(5)
+    if file_exists(ZIP_FILE_PATH):
+        os.remove(ZIP_FILE_PATH)
+
+
+def create_dataset():
+    """
+    This function reads a csv file for the given date. 
+    It takes in the current date as a string and returns a pandas dataframe. 
+    The file is located in the path provided by the filepath function and is encoded in utf-8 with 12 header rows.
+    """
     
+    # file exists
+    if not file_exists(CSV_FILE_PATH):
+        raise FileNotFoundError("CSV File not found")
     
-def fill_input(web_driver, input):
-    obj = web_driver.find_element(By.XPATH, '//*[@id="nome"]')
-    obj.clear()
-    obj.send_keys(f"{input}\n") 
-   
+    # create dataframe
+    return pd.read_csv(
+        CSV_FILE_PATH, 
+        sep=";", 
+        skiprows=range(0, 12),
+        header=None,
+        engine="python", 
+        encoding="iso-8859-1",
+        names=[
+            "cnpj", "nome", "nome_fantasia", "valor_total_debito", "VTDS"
+        ], 
+        usecols=[
+            "cnpj", "nome", "nome_fantasia", "valor_total_debito"
+        ]
+    )
