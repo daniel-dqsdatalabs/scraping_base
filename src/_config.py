@@ -22,9 +22,8 @@ logging.basicConfig(
 )
 
 # read variables from the .env file
-
 CSV_FILE_NAME = os.getenv('CSV_FILE_NAME')
-
+DEFAULT_QUERY_STRING = os.getenv('DEFAULT_QUERY_STRING')
 
 TARGET_URL = os.getenv('TARGET_URL')
 VALIDATION_URL = os.getenv('VALIDATION_URL')
