@@ -110,7 +110,6 @@ class Scraper:
         )
         
         # scroll down page
-        #self._driver.execute_script("window.scrollBy(0, {});".format(500))
         self._scroll_to_middle()
         
         # find search button
