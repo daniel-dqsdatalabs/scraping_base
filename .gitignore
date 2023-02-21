@@ -186,7 +186,11 @@ cython_debug/
 
 # root 
 .DS_Store
-root_cache.sqlite 
-lib/couchdb/*
-lib/deprecated/*
-lib/browsermob-proxy-2.1.4/*
+/src/.ipynb_checkpoints
+/src/__pycache__
+/.lh
+/.env
+/.gitignore
+/lib/couchdb/
+/lib/deprecated/
+/lib/files/*

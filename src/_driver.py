@@ -12,9 +12,8 @@ import undetected_chromedriver.v2 as uc
 from undetected_chromedriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service
 
-from ._config import CHROME_PROFILE, REPO_PATH
-from ._utils import random_user_agent, random_chrome_driver
-
+from ._config import *
+from ._utils import *
 
 class WebDriver:
     
@@ -36,10 +35,10 @@ class WebDriver:
         chrome_options.add_argument('--user-data-dir={0}'.format(CHROME_PROFILE))      
         
         chrome_options.add_experimental_option("prefs", {
-            "download.default_directory": REPO_PATH,
+            "download.default_directory": DOWNLOAD_PATH,
             "download.prompt_for_download": False,
             "download.directory_upgrade": True,
-            "safebrowsing.enabled": True
+            "safebrowsing.enabled": False
         })
           	
         return chrome_options
@@ -49,7 +48,7 @@ class WebDriver:
         path = random_chrome_driver()
         options = self._get_driver_options()
         service = Service(
-            executable_path="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            executable_path=CHROME_DEFAULT_PATH
         )
         
         return uc.Chrome(
@@ -57,5 +56,4 @@ class WebDriver:
             options=options, 
             use_subprocess=True,
         )
-
 

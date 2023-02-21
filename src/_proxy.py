@@ -16,6 +16,8 @@ from ._request import WebRequest
 from ._config import PROXY_CHECK_URL
 from ._utils import random_http_headers
 
+# TODO: Add more proxy services
+
 
 class Proxy:
 

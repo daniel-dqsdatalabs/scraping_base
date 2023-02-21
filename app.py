@@ -6,38 +6,59 @@
 # version           : 0.01
 # ==============================================================================
 
+import concurrent.futures
+import time
+import pandas as pd
+from typing import Callable
+from src import *
 
-from src import Scraper, Storage
-from src import TARGET_URL, CSV_FILE_PATH 
-from src import create_dataset, extract_file, file_exists
 
-def generate_data_service():
+def main_page(query: str):
     
     if file_exists(CSV_FILE_PATH):
         print("File already exists")
         return
     
-    # download file
-    page = Scraper(url=TARGET_URL, query="massa falida")
-    page.download_file()
+    # Run Scraper
+    scraper = Scraper(url=TARGET_URL, query=query)
+    scraper.scrape_main_page_data() 
     
-    # process file
+    # Process CSV
     extract_file()
     dataset = create_dataset()
+    dataset.to_parquet(PARQUET_MASTER_FILE_PATH, engine="pyarrow", overwrite=True)
+
     
-    # store results
-    storage = Storage()
-    storage.save_debtors(dataset)
- 
+def details_page():
     
-def acquisition_data_service():
+    datasets = []
+    cnpj_list = load_dataset(PARQUET_MASTER_FILE_PATH)["cnpj"].values.tolist()
+    
+    for cnpj in cnpj_list:
+        if len(datasets) == 2:
+            break
+        scraper = Scraper(url=TARGET_URL, cnpj=cnpj)
+        dataset = scraper.scrape_details_page_data() 
+        datasets.append = dataset if dataset else None
         
-    # query results
-    storage = Storage()
-    dataset = storage.get_debtors()
+    dataset = combine_datasets(datasets)
+    dataset.to_parquet(PARQUET_DETAIL_FILE_PATH, engine="pyarrow", overwrite=True)
     
-    print(dataset.head(10))
+    
+    
+
 
 
 if __name__ == "__main__":
+
     acquisition_data_service()
+    dataset = load_dataset(PARQUET_DETAIL_FILE_PATH)
+    print(dataset)
+    
+    # extract_data_service(
+    #     query="massa falida"
+    # )
+    
+    
+
+
