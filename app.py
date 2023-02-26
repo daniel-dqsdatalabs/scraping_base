@@ -16,10 +16,6 @@ from src import *
 @log_execution 
 def main_page(query: str = DEFAULT_QUERY_STRING):
     
-    if file_exists(CSV_FILE_PATH):
-        print("File already exists")
-        return
-    
     # Run Scraper
     scraper = Scraper(url=TARGET_URL, query=query)
     scraper.scrape_main_page_data() 
@@ -34,22 +30,22 @@ def main_page(query: str = DEFAULT_QUERY_STRING):
 def details_page():
     
     datasets = []
-    cnpj_list = load_dataset(PARQUET_MASTER_FILE_PATH)["cnpj"].values.tolist()
+    uuid_values = load_dataset(PARQUET_MASTER_FILE_PATH)[UUID_COL].values.tolist()
     
     # TODO: use concurrent.futures
-    for cnpj in cnpj_list:
+    for uuid in uuid_values:
         if len(datasets) == 2:
             break
-        scraper = Scraper(url=TARGET_URL, cnpj=cnpj)
+        scraper = Scraper(url=TARGET_URL, uuid=uuid)
         dataset = scraper.scrape_details_page_data() 
         datasets.append = dataset if dataset else None
         
     dataset = combine_datasets(datasets)
-    dataset.to_parquet(PARQUET_DETAIL_FILE_PATH, engine="pyarrow", overwrite=True)
+    dataset.to_parquet(PARQUET_DETAIL_FILE_PATH, engine="pyarrow")
     
 if __name__ == "__main__":
-    main_page()
-    #details_page()
+    #main_page()
+    details_page()
 
 
 
