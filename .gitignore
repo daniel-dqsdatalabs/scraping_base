@@ -194,3 +194,4 @@ cython_debug/
 /lib/couchdb/
 /lib/deprecated/
 /lib/files/*
+/lib/logs/*

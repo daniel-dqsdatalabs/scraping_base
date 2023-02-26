@@ -8,15 +8,25 @@
 #==============================================================================
 
 
+import os
+import shutil
+import tempfile
+import random
+import string
+from datetime import datetime, timedelta
+from faker import Faker
+from fake_useragent import UserAgent
+from random_user_agent.user_agent import UserAgent as RandomUserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
+from undetected_chromedriver.v2 import ChromeOptions
+from selenium.webdriver import Firefox, FirefoxProfile
 import undetected_chromedriver.v2 as uc
-from undetected_chromedriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service
 
 from ._config import *
 from ._utils import *
 
 class WebDriver:
-    
     
     def _get_driver_options(self):
         """
@@ -40,7 +50,7 @@ class WebDriver:
             "download.directory_upgrade": True,
             "safebrowsing.enabled": False
         })
-          	
+
         return chrome_options
     
 

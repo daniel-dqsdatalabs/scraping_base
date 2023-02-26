@@ -2,6 +2,8 @@ bs4
 boto3
 webdriver_manager
 fake_user_agent
+fake_useragent
+faker 
 random-user-agent
 selenium
 pandas

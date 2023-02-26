@@ -20,6 +20,8 @@ logging.basicConfig(
     filename=f'./lib/logs/scraper_{int(round(datetime.now().timestamp()))}.log', 
     filemode='w', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S'
 )
+logger = logging.getLogger(__name__)
+os.environ['PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT'] = '180'
 
 # read variables from the .env file
 CSV_FILE_NAME = os.getenv('CSV_FILE_NAME')
@@ -30,8 +32,6 @@ VALIDATION_URL = os.getenv('VALIDATION_URL')
 PROXY_CHECK_URL = os.getenv('PROXY_CHECK_URL')
 PARQUET_MASTER_NAME = os.getenv('PARQUET_MASTER_NAME')
 PARQUET_DETAILS_NAME = os.getenv('PARQUET_DETAILS_NAME')
-
-
 
 PAGE_LOAD_XPATH = os.getenv('PAGE_LOAD_XPATH')
 TXT_QUERY_BY_NAME_XPATH = os.getenv('TXT_QUERY_BY_NAME_XPATH')
@@ -66,8 +66,9 @@ DIR_DT = datetime.now().strftime("%Y_%m_%d")
 
 BASE_PATH =  Path(__file__).parent.parent
 LIB_PATH = os.path.join(BASE_PATH, "lib")
+
 FILE_PATH = os.path.join(LIB_PATH, "files")
-DOWNLOAD_PATH = os.path.join(LIB_PATH, "files", DIR_DT)
+DOWNLOAD_PATH = os.path.join(FILE_PATH, DIR_DT)
 ZIP_FILE_PATH = f"{DOWNLOAD_PATH}/{CSV_FILE_NAME}_{CSV_DT}.zip"
 CSV_FILE_PATH = f"{DOWNLOAD_PATH}/{CSV_FILE_NAME}_{CSV_DT}.csv"
 PARQUET_MASTER_FILE_PATH = f"{FILE_PATH}/{PARQUET_MASTER_NAME}.parquet"

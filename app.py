@@ -13,6 +13,7 @@ from typing import Callable
 from src import *
 
 
+@log_execution 
 def main_page(query: str = DEFAULT_QUERY_STRING):
     
     if file_exists(CSV_FILE_PATH):
@@ -26,9 +27,10 @@ def main_page(query: str = DEFAULT_QUERY_STRING):
     # Process CSV
     extract_file()
     dataset = create_dataset()
-    dataset.to_parquet(PARQUET_MASTER_FILE_PATH, engine="pyarrow", overwrite=True)
+    dataset.to_parquet(PARQUET_MASTER_FILE_PATH, engine="pyarrow")
 
     
+@log_execution 
 def details_page():
     
     datasets = []
@@ -47,7 +49,7 @@ def details_page():
     
 if __name__ == "__main__":
     main_page()
-    details_page()
+    #details_page()
 
 
 
